@@ -1,12 +1,14 @@
 import tw, { css } from 'twin.macro';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { AiOutlineMenuUnfold, AiOutlineClose } from 'react-icons/ai';
 
 export default function Header() {
   const [overFlowActive, setOverFlowActive] = useState(false);
   const [overFlownLinks, setOverFlownLinks] = useState([]);
   const [overFlownItemCount, setOverFlownItemCount] = useState(0);
   const [dropDownActive, setDropDownActive] = useState(false);
+  const [mobileMenuActive, setMobileMenuActive] = useState(false);
 
   const linksRef = useRef();
 
@@ -34,20 +36,14 @@ export default function Header() {
 
   return (
     <div
-      css={tw`flex px-4 py-2 bg-white h-24 items-center text-sm font-semibold text-gray-500`}
+      css={tw`flex justify-between px-4 py-2 bg-white h-24 items-center text-sm text-gray-500 md:justify-center lg:justify-start relative`}
     >
-      {overFlownLinks.length < 3 && (
-        <div>
-          <Image
-            src={'/vercel.svg'}
-            height={80}
-            width={80}
-            alt={'vercel logo'}
-          />
-        </div>
-      )}
+      <div css={tw`sm:block md:hidden lg:block`}>
+        <Image src={'/vercel.svg'} height={80} width={80} alt={'vercel logo'} />
+      </div>
+
       <ul
-        css={tw`flex list-none w-6/12 overflow-hidden space-x-2 `}
+        css={tw`hidden md:flex list-none w-9/12 px-8 lg:w-6/12 overflow-hidden space-x-2 `}
         ref={linksRef}
       >
         {navLinks.map((el) => (
@@ -72,7 +68,7 @@ export default function Header() {
         </div>
       )}
       {overFlownLinks.length < 3 && (
-        <div css={tw`flex items-center space-x-4 ml-auto`}>
+        <div css={tw`items-center space-x-4 ml-auto hidden lg:flex`}>
           <div>English</div>
           <div>+30 21000000000000</div>
           <button
@@ -82,6 +78,34 @@ export default function Header() {
           </button>
         </div>
       )}
+
+      {/* Mobile Menu */}
+      <div css={tw`md:hidden`}>
+        {!mobileMenuActive && (
+          <AiOutlineMenuUnfold
+            size={30}
+            onClick={() => setMobileMenuActive(true)}
+          />
+        )}
+        {mobileMenuActive && (
+          <AiOutlineClose
+            size={30}
+            onClick={() => setMobileMenuActive(false)}
+          />
+        )}
+        {/* Menu Links */}
+        {mobileMenuActive && (
+          <ul
+            css={tw`flex flex-col absolute top-20 right-0 items-center space-y-4 w-full list-none bg-white pb-10 `}
+          >
+            {navLinks.map((el) => (
+              <li key={el} css={tw`cursor-pointer`}>
+                {el}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
