@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   const itemOverFlown = (offset) => {
-    setOverFlownItemCount((offset / 40).toFixed(0));
+    setOverFlownItemCount((offset / 60).toFixed(0));
     if (overFlownItemCount > 0) {
       setOverFlownLinks(navLinks.slice(-overFlownItemCount));
       console.log(overFlownLinks);
@@ -53,7 +53,7 @@ export default function Header() {
         ))}
       </ul>
       {overFlowActive && (
-        <div css={tw`cursor-pointer flex flex-col relative ml-4`}>
+        <div css={tw`cursor-pointer hidden md:flex flex-col relative ml-4`}>
           <span onClick={() => setDropDownActive(!dropDownActive)}>More</span>
           <ul
             css={tw`absolute flex flex-col list-none bg-gray-50 top-2 py-1 px-8`}
